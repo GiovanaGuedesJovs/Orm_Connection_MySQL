@@ -7,8 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Livro {
@@ -21,11 +24,20 @@ public class Livro {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_capa") // tabela submissa
+    @JsonBackReference
     private Capa capa;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_livro")
     private List<Rotulo> rotulos;
+
+    @ManyToMany
+    @JoinTable(name = "associacao_livro_rotulo", 
+        joinColumns = @JoinColumn(
+        name = "fk_livro"), 
+        inverseJoinColumns = @JoinColumn(name = "fk_rotulo")
+    )
+    private List<RotuloManyToMany> rotulosMany;
 
     public Livro() {
 
@@ -85,6 +97,14 @@ public class Livro {
 
     public void setRotulos(List<Rotulo> rotulos) {
         this.rotulos = rotulos;
+    }
+
+    public List<RotuloManyToMany> getRotulosMany() {
+        return rotulosMany;
+    }
+
+    public void setRotulosMany(List<RotuloManyToMany> rotulosMany) {
+        this.rotulosMany = rotulosMany;
     }
 
 }

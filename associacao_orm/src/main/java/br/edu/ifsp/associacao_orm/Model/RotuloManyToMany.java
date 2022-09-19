@@ -1,25 +1,27 @@
 package br.edu.ifsp.associacao_orm.Model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-public class Rotulo {
+public class RotuloManyToMany {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String descricao;
 
-    @ManyToOne
-    @JsonBackReference
-    private Livro livro;
+    @ManyToMany(mappedBy = "rotulosMany")
+    private List<Livro> livros;
 
-    public Rotulo(){}
+    public RotuloManyToMany(){}
 
     public Long getId() {
         return id;
@@ -37,12 +39,12 @@ public class Rotulo {
         this.descricao = descricao;
     }
 
-    public Livro getLivro() {
-        return livro;
+    public List<Livro> getLivros() {
+        return livros;
     }
 
-    public void setLivro(Livro livro) {
-        this.livro = livro;
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
     }
 
 }
